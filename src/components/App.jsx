@@ -12,15 +12,23 @@ export function App() {
   const [toggleLoader, setToggleLoader] = useState(false);
   const [loadHits, setLoadHits] = useState(0);
 
-  const submitSearch = ({ searchValue }) => {
+  const submitSearch = ({ searchInput }) => {
+    if(searchValue === searchInput){
+      return Notiflix.Notify.failure(
+        'Please enter a search value different from the previous request'
+      );
+    }
     setPage(1);
     setDataImages([]);
-    setSearchValue(searchValue);
+    setSearchValue(searchInput);
   };
 
   const onLoadMore = () => {
     setPage(page + 1);
   };
+
+
+
 
   useEffect(() => {
     if (!searchValue) {
@@ -35,19 +43,22 @@ export function App() {
               'Sorry, but nothing was found for your search'
             );
           }
-          setDataImages([...dataImages, ...data.hits]);
-          setLoadHits(data.hits.length);
+            setDataImages(prevImages => {
+              return [...prevImages, ...data.hits];
+            });
+            setLoadHits(data.hits.length);
         })
         .catch(error => console.log(error))
         .finally(() => {
           setToggleLoader(false);
         });
     };
-    getInfo({ searchValue, page });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getInfo({ searchValue, page});
+    
   }, [searchValue, page]);
 
+
+  
   return (
     <>
       <Searchbar onSubmit={submitSearch} />

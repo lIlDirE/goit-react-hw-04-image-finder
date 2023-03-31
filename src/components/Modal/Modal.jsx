@@ -1,16 +1,19 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import css from './Modal.module.css';
 
-const Modal = ({closeModal, url, alt}) => {
+const Modal = ({ closeModal, url, alt }) => {
   useEffect(() => {
+    const closeEscModal = e => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    };
     window.addEventListener('keydown', closeEscModal);
     return () => {
       window.removeEventListener('keydown', closeEscModal);
     };
-  // eslint-disable-next-line no-use-before-define
-  }, []);
+  }, [closeModal]);
 
   const handleBackDropClick = e => {
     if (e.currentTarget === e.target) {
@@ -18,14 +21,7 @@ const Modal = ({closeModal, url, alt}) => {
     }
   };
 
-  const closeEscModal = e => {
-    if (e.key === 'Escape') {
-      closeModal()
-    }
-  };
-
   return (
-
     <div className={css.modal} onClick={handleBackDropClick}>
       <div className={css.content}>
         <img src={url} alt={alt} />

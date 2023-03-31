@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import css from './Searchbar.module.css';
 
 const Searchbar = ({ onSubmit }) => {
-  const [searchValue, setSearchValue] = useState('');
+  const [searchInput, setSearchInput] = useState('');
 
   const handleSearch = e => {
-    setSearchValue(e.target.value);
+    setSearchInput(e.target.value);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit({searchValue});
+    onSubmit({searchInput});
   };
 
   return (
@@ -22,7 +22,7 @@ const Searchbar = ({ onSubmit }) => {
         </button>
         <input
           onChange={handleSearch}
-          value={searchValue}
+          value={searchInput}
           className={css.SearchFormInput}
           type="text"
           autoComplete="off"
